@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/de.cooperateproject.eclipse.cdodebugutils.feature_0.1.0.qualifier.jar" id="de.cooperateproject.eclipse.cdodebugutils.feature" version="0.1.0.qualifier">
+      <category name="cdodebugutils"/>
+   </feature>
+   <category-def name="cdodebugutils" label="CDO Debug Utils"/>
+</site>
