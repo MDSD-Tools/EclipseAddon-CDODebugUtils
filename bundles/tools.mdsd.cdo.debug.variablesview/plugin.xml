@@ -4,8 +4,8 @@
    <extension
          point="org.eclipse.debug.core.logicalStructureTypes">
       <logicalStructureType
-            class="de.cooperateproject.eclipse.cdodebugutils.variablesview.CDOObjectLogicalStructureType"
-            id="de.cooperateproject.eclipse.cdodebug.objectlogicalstructuretype"
+            class="tools.mdsd.cdo.debug.variablesview.CDOObjectLogicalStructureType"
+            id="tools.mdsd.cdo.debug.variablesview.objectlogicalstructuretype"
             modelIdentifier="org.eclipse.jdt.debug">
       </logicalStructureType>
    </extension>

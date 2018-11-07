@@ -1,4 +1,4 @@
-package de.cooperateproject.eclipse.cdodebugutils.variablesview;
+package tools.mdsd.cdo.debug.variablesview;
 
 import java.util.ArrayList;
 import java.util.HashMap;
