@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CDO Variables View Tests
+Bundle-SymbolicName: tools.mdsd.cdo.debug.tests;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.debug.core;bundle-version="3.10.0",
+ org.eclipse.equinox.registry,
+ org.junit,
+ org.junit.jupiter.api,
+ org.junit.jupiter.engine,
+ org.junit.jupiter.migrationsupport,
+ org.junit.jupiter.params,
+ org.junit.platform.commons,
+ org.junit.platform.engine,
+ org.junit.platform.launcher,
+ org.junit.platform.runner,
+ org.junit.platform.suite.api,
+ org.junit.vintage.engine,
+ org.hamcrest.core,
+ org.opentest4j,
+ org.apiguardian,
+ tools.mdsd.cdo.debug.variablesview;bundle-version="0.1.0",
+ org.mockito;bundle-version="2.13.0",
+ org.objenesis;bundle-version="2.6.0",
+ net.bytebuddy.byte-buddy;bundle-version="1.7.9"
