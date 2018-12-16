@@ -18,7 +18,7 @@ import tools.mdsd.cdo.debug.variablesview.CDOObjectLogicalStructureType;
 class CDOObjectLogicalStructureTypeTest {
 
 	@Test
-	void testProvidesLogicalStructureReturnsTrueForExpectedValueConfiguration() throws DebugException {
+	void testProvidesLogicalStructureForExpectedValueConfiguration() throws DebugException {
 		IValue value = mockValueWithVariables(
 				new IVariable[] {
 						mockVariables(new String[] { "eSettings" }),
