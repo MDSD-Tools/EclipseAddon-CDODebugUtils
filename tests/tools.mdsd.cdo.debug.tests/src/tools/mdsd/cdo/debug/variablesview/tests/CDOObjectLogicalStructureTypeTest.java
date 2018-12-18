@@ -1,5 +1,6 @@
 package tools.mdsd.cdo.debug.variablesview.tests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -8,6 +9,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
@@ -16,79 +18,79 @@ import org.junit.jupiter.api.Test;
 import tools.mdsd.cdo.debug.variablesview.CDOObjectLogicalStructureType;
 
 class CDOObjectLogicalStructureTypeTest {
-
+	
 	@Test
 	void testProvidesLogicalStructureForExpectedValueConfiguration() throws DebugException {
 		IValue value = mockValueWithVariables(
-				new IVariable[] {
-						mockVariables(new String[] { "eSettings" }),
-						mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("TRANSIENT")),
-						mockVariables(new String[] { "revision", "classInfo" })
-				});
+			new IVariable[] {
+				mockVariables(new String[] { "eSettings" }),
+				mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("TRANSIENT")),
+				mockVariables(new String[] { "revision", "classInfo" })
+			});
 		assertTrue(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
 	}
 
 	@Test
 	void testDoesNotProvideLogicalStructureWhenEsettingsMissing() throws DebugException {
 		IValue value = mockValueWithVariables(
-				new IVariable[] {
-						mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("TRANSIENT")),
-						mockVariables(new String[] { "revision", "classInfo" })
-				});
+			new IVariable[] {
+				mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("TRANSIENT")),
+				mockVariables(new String[] { "revision", "classInfo" })
+			});
 		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
 	}
 
 	@Test
 	void testDoesNotProvideLogicalStructureWhenViewAndStateMissing() throws DebugException {
 		IValue value = mockValueWithVariables(
-				new IVariable[] {
-						mockVariables(new String[] { "eSettings" }),
-						mockVariables(new String[] { "revision", "classInfo" })
-				});
+			new IVariable[] {
+				mockVariables(new String[] { "eSettings" }),
+				mockVariables(new String[] { "revision", "classInfo" })
+			});
 		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
 	}
 
 	@Test
 	void testDoesNotProvideLogicalStructureWhenViewAndStateStateStateMissing() throws DebugException {
 		IValue value = mockValueWithVariables(
-				new IVariable[] {
-						mockVariables(new String[] { "eSettings" }),
-						mockVariables(new String[] { "viewAndState", "foo" }),
-						mockVariables(new String[] { "revision", "classInfo" })
-				});
+			new IVariable[] {
+				mockVariables(new String[] { "eSettings" }),
+				mockVariables(new String[] { "viewAndState", "foo" }),
+				mockVariables(new String[] { "revision", "classInfo" })
+			});
 		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
 	}
 
 	@Test
 	void testDoesNotProvideLogicalStructureWhenViewAndStateStateNameMissing() throws DebugException {
 		IValue value = mockValueWithVariables(
-				new IVariable[] {
-						mockVariables(new String[] { "eSettings" }),
-						mockVariables(new String[] { "viewAndState", "state", "foo" }),
-						mockVariables(new String[] { "revision", "classInfo" })
-				});
+			new IVariable[] {
+				mockVariables(new String[] { "eSettings" }),
+				mockVariables(new String[] { "viewAndState", "state", "foo" }),
+				mockVariables(new String[] { "revision", "classInfo" })
+			});
 		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
 	}
 
 	@Test
 	void testDoesNotProvideLogicalStructureWhenViewAndStateStateNameValueMissing() throws DebugException {
 		IValue value = mockValueWithVariables(
-				new IVariable[] {
-						mockVariables(new String[] { "eSettings" }),
-						mockVariables(new String[] { "viewAndState", "state", "name", "foo" }),
-						mockVariables(new String[] { "revision", "classInfo" })
-				});
+			new IVariable[] {
+				mockVariables(new String[] { "eSettings" }),
+				mockVariables(new String[] { "viewAndState", "state", "name", "foo" }),
+				mockVariables(new String[] { "revision", "classInfo" })
+			});
 		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
 	}
 
 	@Test
 	void testDoesNotProvideLogicalStructureWhenViewAndStateStateNameValueIsNotTransient() throws DebugException {
 		IValue value = mockValueWithVariables(
-				new IVariable[] {
-						mockVariables(new String[] { "eSettings" }),
-						mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("foo")),
-						mockVariables(new String[] { "revision", "classInfo" })
-				});
+			new IVariable[] {
+				mockVariables(new String[] { "eSettings" }),
+				mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("foo")),
+				mockVariables(new String[] { "revision", "classInfo" })
+			});
 		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
 	}
 
@@ -102,11 +104,106 @@ class CDOObjectLogicalStructureTypeTest {
 	@Test
 	void testDoesNotProvideLogicalStructureWhenClassInfoMissing() throws DebugException {
 		IValue value = mockValueWithVariables(
-				new IVariable[] {
-						mockVariables(new String[] { "eSettings" }),
-						mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("TRANSIENT"))
-				});
+			new IVariable[] {
+				mockVariables(new String[] { "eSettings" }),
+				mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("TRANSIENT"))
+			});
 		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
+	}
+	
+	@Test
+	void testGetLogicalStructureReturnsAMappedValue() throws CoreException {
+		IValue value = mockValueWithVariables(
+			new IVariable[] {
+				mockVariables(
+					new String[] { "revision", "classInfo" }, mockValueWithVariables(
+						new IVariable[] {
+							mockVariables(
+								new String[] { "eClass", "eAllStructuralFeatures", "data" },
+								mockValueWithVariables(new IVariable[] {
+									mockVariables(new String[] { "any" }, mockValueWithVariables(new IVariable[] {
+										mockVariables(new String[] { "name" }, mockStringValue("foo"))
+									})),
+								})),
+							mockVariables(new String[] { "transientFeatureIndices" },
+								mockValueWithVariables(new IVariable[] {
+									mockVariables(new String[] { "any" }, mockStringValue("0")),
+								}))
+						})),
+				mockVariables(new String[] { "eSettings" }, mockValueWithVariables(new IVariable[] {
+					mockVariables(new String[] { "any" }, mockStringValue("bar"))
+				}))
+			});
+		IValue logicalStructure = new CDOObjectLogicalStructureType().getLogicalStructure(value);
+		IVariable[] variables = logicalStructure.getVariables();
+		assertEquals(1, variables.length);
+		assertEquals("foo", variables[0].getName());
+		assertEquals("bar", variables[0].getValue().getValueString());
+	}
+
+	@Test
+	void testGetLogicalStructureReturnsTwoMappedValuesWithNamesOrderedAccordingToTransientFeatureIndices() throws CoreException {
+		IValue value = mockValueWithVariables(
+			new IVariable[] {
+				mockVariables(
+					new String[] { "revision", "classInfo" }, mockValueWithVariables(
+						new IVariable[] {
+							mockVariables(
+								new String[] { "eClass", "eAllStructuralFeatures", "data" },
+								mockValueWithVariables(new IVariable[] {
+									mockVariables(new String[] { "any" }, mockValueWithVariables(new IVariable[] {
+										mockVariables(new String[] { "name" }, mockStringValue("foo1"))
+									})),
+									mockVariables(new String[] { "any" }, mockValueWithVariables(new IVariable[] {
+										mockVariables(new String[] { "name" }, mockStringValue("foo2"))
+									})),
+								})),
+							mockVariables(new String[] { "transientFeatureIndices" },
+								mockValueWithVariables(new IVariable[] {
+									mockVariables(new String[] { "any" }, mockStringValue("1")),
+									mockVariables(new String[] { "any" }, mockStringValue("0")),
+								}))
+						})),
+				mockVariables(new String[] { "eSettings" }, mockValueWithVariables(new IVariable[] {
+					mockVariables(new String[] { "any" }, mockStringValue("bar2")),
+					mockVariables(new String[] { "any" }, mockStringValue("bar1"))
+				}))
+			});
+		IValue logicalStructure = new CDOObjectLogicalStructureType().getLogicalStructure(value);
+		IVariable[] variables = logicalStructure.getVariables();
+		assertEquals(2, variables.length);
+		assertEquals("foo2", variables[0].getName());
+		assertEquals("bar2", variables[0].getValue().getValueString());
+		assertEquals("foo1", variables[1].getName());
+		assertEquals("bar1", variables[1].getValue().getValueString());
+	}
+	
+	@Test
+	void testGetLogicalStructureSkipsFeaturesWithoutTransientFeatureIndex() throws CoreException {
+		IValue value = mockValueWithVariables(
+			new IVariable[] {
+				mockVariables(
+					new String[] { "revision", "classInfo" }, mockValueWithVariables(
+						new IVariable[] {
+							mockVariables(
+								new String[] { "eClass", "eAllStructuralFeatures", "data" },
+								mockValueWithVariables(new IVariable[] {
+									mockVariables(new String[] { "any" }, mockValueWithVariables(new IVariable[] {
+										mockVariables(new String[] { "name" }, mockStringValue("foo"))
+									}))
+								})),
+							mockVariables(new String[] { "transientFeatureIndices" },
+								mockValueWithVariables(new IVariable[] {
+									mockVariables(new String[] { "any" }, mockStringValue("5"))
+								}))
+						})),
+				mockVariables(new String[] { "eSettings" }, mockValueWithVariables(new IVariable[] {
+					mockVariables(new String[] { "any" }, mockStringValue("bar"))
+				}))
+			});
+		IValue logicalStructure = new CDOObjectLogicalStructureType().getLogicalStructure(value);
+		IVariable[] variables = logicalStructure.getVariables();
+		assertEquals(0, variables.length);
 	}
 
 	private IVariable mockVariables(String[] path) throws DebugException {
