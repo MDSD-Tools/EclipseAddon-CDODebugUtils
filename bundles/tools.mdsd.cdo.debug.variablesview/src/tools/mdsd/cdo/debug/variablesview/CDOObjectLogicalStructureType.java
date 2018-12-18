@@ -1,10 +1,14 @@
 package tools.mdsd.cdo.debug.variablesview;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import static java.util.function.Function.identity;
+import static tools.mdsd.cdo.debug.variablesview.LambdaExceptionUtil.wrapFn;
+import static tools.mdsd.cdo.debug.variablesview.LambdaExceptionUtil.wrapIntFn;
+
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
@@ -20,7 +24,11 @@ public class CDOObjectLogicalStructureType implements ILogicalStructureTypeDeleg
     @Override
     public boolean providesLogicalStructure(IValue value) {
         try {
-            return containsESettings(value) && containsRevision(value) && containsValidViewAndState(value);
+            return findField(value, "eSettings").isPresent()
+                && findField(value, "revision", "classInfo").isPresent()
+                && findField(value, "viewAndState", "state", "name")
+                    .map(wrapFn(variable -> Objects.equals(variable.getValue().getValueString(), "TRANSIENT")))
+                    .orElse(false);
         } catch (DebugException e) {
             return false;
         }
@@ -31,35 +39,20 @@ public class CDOObjectLogicalStructureType implements ILogicalStructureTypeDeleg
         return new CDOObjectValue(value);
     }
 
-    private static boolean containsValidViewAndState(IValue value) throws DebugException {
-        Optional<IVariable> viewAndStateField = findField(value, "viewAndState");
-        if (!viewAndStateField.isPresent()) {
-            return false;
+    private static Optional<IVariable> findField(IValue value, String... path) throws DebugException {
+        IValue val = value;
+        for (int i = 0; i < path.length; i++) {
+            for (IVariable variable : val.getVariables()) {
+                if (path[i].equals(variable.getName())) {
+                    val = variable.getValue();
+                    if (i == path.length - 1) {
+                        return Optional.of(variable);
+                    }
+                    break;
+                }
+            }
         }
-        Optional<IVariable> stateField = findField(viewAndStateField.get().getValue(), "state");
-        if (!stateField.isPresent()) {
-            return false;
-        }
-        Optional<IVariable> stateNameField = findField(stateField.get().getValue(), "name");
-        if (!stateNameField.isPresent()) {
-            return false;
-        }
-        String stateName = stateNameField.get().getValue().getValueString();
-        return "TRANSIENT".equals(stateName);
-    }
-
-    private static boolean containsRevision(IValue value) throws DebugException {
-        Optional<IVariable> revisionField = findField(value, "revision");
-        if (!revisionField.isPresent()) {
-            return false;
-        }
-        Optional<IVariable> classInfoField = findField(revisionField.get().getValue(), "classInfo");
-        return classInfoField.isPresent();
-    }
-
-    private static boolean containsESettings(IValue value) throws DebugException {
-        Optional<IVariable> eSettingsField = findField(value, "eSettings");
-        return eSettingsField.isPresent();
+        return Optional.empty();
     }
 
     private static Optional<IVariable> findField(IValue value, String fieldName) throws DebugException {
@@ -116,62 +109,45 @@ public class CDOObjectLogicalStructureType implements ILogicalStructureTypeDeleg
 
         @Override
         public IVariable[] getVariables() throws DebugException {
+            IValue allFeaturesData = findField(realValue,
+                "revision", "classInfo", "eClass", "eAllStructuralFeatures", "data").get().getValue();
+            IValue transientFeatureIndices = findField(realValue,
+                "revision", "classInfo", "transientFeatureIndices").get().getValue();
+            IVariable[] settingVars = findField(realValue, "eSettings").get().getValue().getVariables();
+            Map<Integer, String> featureIndexToName = buildFeatureIndexToNameMap(allFeaturesData);
+            Map<Integer, Integer> transientIndexToFeatureIndex = buildTransientIndexToFeatureIndexMap(
+                transientFeatureIndices);
+            return IntStream
+                .range(0, settingVars.length)
+                .filter(i -> transientIndexToFeatureIndex.get(i) != null)
+                .mapToObj(wrapIntFn(i -> {
+                    Integer featureIndex = transientIndexToFeatureIndex.get(i);
+                    String featureName = featureIndexToName.get(featureIndex);
+                    IValue featureValue = settingVars[i].getValue();
+                    return new CDOObjectFeatureVariable(featureName, featureValue);
+                }))
+                .toArray(IVariable[]::new);
+        }
 
-            Optional<IVariable> revision = findField(realValue, "revision");
+        private Map<Integer, Integer> buildTransientIndexToFeatureIndexMap(IValue transientFeatureIndicesValue)
+            throws DebugException {
+            IVariable[] variables = transientFeatureIndicesValue.getVariables();
+            return IntStream.range(0, variables.length).boxed()
+                .collect(
+                    Collectors.toMap(
+                        wrapFn(i -> Integer.parseInt(variables[i].getValue().getValueString())),
+                        identity()));
+        }
 
-            IValue revisionValue = revision.get().getValue();
-            Optional<IVariable> classInfoField = findField(revisionValue, "classInfo");
-
-            IValue classInfoValue = classInfoField.get().getValue();
-            Optional<IVariable> eClassField = findField(classInfoValue, "eClass");
-
-            IValue eClassValue = eClassField.get().getValue();
-            Optional<IVariable> eAllStructuralFeaturesField = findField(eClassValue, "eAllStructuralFeatures");
-
-            IValue eAllStructuralFeaturesValue = eAllStructuralFeaturesField.get().getValue();
-            Optional<IVariable> allFeaturesDataField = findField(eAllStructuralFeaturesValue, "data");
-
-            Map<Integer, String> featureIndexToName = new HashMap<>();
-            IValue allFeaturesDataValue = allFeaturesDataField.get().getValue();
+        private Map<Integer, String> buildFeatureIndexToNameMap(IValue allFeaturesDataValue) throws DebugException {
             IVariable[] allFeaturesDataVariables = allFeaturesDataValue.getVariables();
-            for (int i = 0; i < allFeaturesDataVariables.length; ++i) {
-                IVariable featureVariable = allFeaturesDataVariables[i];
-                IValue featureValue = featureVariable.getValue();
-                Optional<IVariable> nameField = findField(featureValue, "name");
-                IValue nameValue = nameField.get().getValue();
-                String nameValueString = nameValue.getValueString();
-                featureIndexToName.put(i, nameValueString);
-            }
-
-            Optional<IVariable> transientIndicesField = findField(classInfoValue, "transientFeatureIndices");
-            IValue transientIndicesValue = transientIndicesField.get().getValue();
-
-            Map<Integer, Integer> transientIndexToFeatureIndex = new HashMap<>();
-            IVariable[] transientIndicesVariables = transientIndicesValue.getVariables();
-            for (int i = 0; i < transientIndicesVariables.length; ++i) {
-                IVariable transientIndexVariable = transientIndicesVariables[i];
-                IValue transientIndexValue = transientIndexVariable.getValue();
-                String transientIndexString = transientIndexValue.getValueString();
-                int transientIndex = Integer.parseInt(transientIndexString);
-                transientIndexToFeatureIndex.put(transientIndex, i);
-            }
-
-            Optional<IVariable> settings = findField(realValue, "eSettings");
-            IValue settingsValue = settings.get().getValue();
-            IVariable[] settingVars = settingsValue.getVariables();
-
-            List<IVariable> result = new ArrayList<>();
-            for (int i = 0; i < settingVars.length; ++i) {
-                Integer featureIndex = transientIndexToFeatureIndex.getOrDefault(i, -1);
-                if (featureIndex < 0) {
-                    continue;
-                }
-                String featureName = featureIndexToName.get(featureIndex);
-                IValue featureValue = settingVars[i].getValue();
-                result.add(new CDOObjectFeatureVariable(featureName, featureValue));
-            }
-
-            return result.toArray(new IVariable[0]);
+            return IntStream.range(0, allFeaturesDataVariables.length).boxed()
+                .collect(Collectors.toMap(
+                    identity(),
+                    wrapFn(i -> findField(allFeaturesDataVariables[i].getValue(), "name")
+                        .get()
+                        .getValue()
+                        .getValueString())));
         }
 
         @Override
@@ -261,5 +237,4 @@ public class CDOObjectLogicalStructureType implements ILogicalStructureTypeDeleg
         }
 
     }
-
 }
