@@ -27,7 +27,10 @@ class CDOObjectLogicalStructureTypeTest {
 				mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("TRANSIENT")),
 				mockVariables(new String[] { "revision", "classInfo" })
 			});
-		assertTrue(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
+		
+		boolean providesLogicalStructure = new CDOObjectLogicalStructureType().providesLogicalStructure(value);
+		
+		assertTrue(providesLogicalStructure);
 	}
 
 	@Test
@@ -37,7 +40,10 @@ class CDOObjectLogicalStructureTypeTest {
 				mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("TRANSIENT")),
 				mockVariables(new String[] { "revision", "classInfo" })
 			});
-		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
+		
+		boolean providesLogicalStructure = new CDOObjectLogicalStructureType().providesLogicalStructure(value);
+		
+		assertFalse(providesLogicalStructure);
 	}
 
 	@Test
@@ -47,7 +53,10 @@ class CDOObjectLogicalStructureTypeTest {
 				mockVariables(new String[] { "eSettings" }),
 				mockVariables(new String[] { "revision", "classInfo" })
 			});
-		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
+		
+		boolean providesLogicalStructure = new CDOObjectLogicalStructureType().providesLogicalStructure(value);
+		
+		assertFalse(providesLogicalStructure);
 	}
 
 	@Test
@@ -58,7 +67,10 @@ class CDOObjectLogicalStructureTypeTest {
 				mockVariables(new String[] { "viewAndState", "foo" }),
 				mockVariables(new String[] { "revision", "classInfo" })
 			});
-		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
+		
+		boolean providesLogicalStructure = new CDOObjectLogicalStructureType().providesLogicalStructure(value);
+		
+		assertFalse(providesLogicalStructure);
 	}
 
 	@Test
@@ -69,7 +81,10 @@ class CDOObjectLogicalStructureTypeTest {
 				mockVariables(new String[] { "viewAndState", "state", "foo" }),
 				mockVariables(new String[] { "revision", "classInfo" })
 			});
-		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
+		
+		boolean providesLogicalStructure = new CDOObjectLogicalStructureType().providesLogicalStructure(value);
+		
+		assertFalse(providesLogicalStructure);
 	}
 
 	@Test
@@ -80,7 +95,10 @@ class CDOObjectLogicalStructureTypeTest {
 				mockVariables(new String[] { "viewAndState", "state", "name", "foo" }),
 				mockVariables(new String[] { "revision", "classInfo" })
 			});
-		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
+		
+		boolean providesLogicalStructure = new CDOObjectLogicalStructureType().providesLogicalStructure(value);
+		
+		assertFalse(providesLogicalStructure);
 	}
 
 	@Test
@@ -91,14 +109,20 @@ class CDOObjectLogicalStructureTypeTest {
 				mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("foo")),
 				mockVariables(new String[] { "revision", "classInfo" })
 			});
-		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
+		
+		boolean providesLogicalStructure = new CDOObjectLogicalStructureType().providesLogicalStructure(value);
+		
+		assertFalse(providesLogicalStructure);
 	}
 
 	@Test
 	void testDoesNotProvideLogicalStructureWhenADebugExceptionIsThrown() throws DebugException {
 		IValue value = mock(IValue.class);
 		when(value.getVariables()).thenThrow(DebugException.class);
-		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
+		
+		boolean providesLogicalStructure = new CDOObjectLogicalStructureType().providesLogicalStructure(value);
+		
+		assertFalse(providesLogicalStructure);
 	}
 
 	@Test
@@ -108,7 +132,10 @@ class CDOObjectLogicalStructureTypeTest {
 				mockVariables(new String[] { "eSettings" }),
 				mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("TRANSIENT"))
 			});
-		assertFalse(new CDOObjectLogicalStructureType().providesLogicalStructure(value));
+		
+		boolean providesLogicalStructure = new CDOObjectLogicalStructureType().providesLogicalStructure(value);
+		
+		assertFalse(providesLogicalStructure);
 	}
 	
 	@Test
@@ -134,8 +161,10 @@ class CDOObjectLogicalStructureTypeTest {
 					mockVariables(new String[] { "any" }, mockStringValue("bar"))
 				}))
 			});
+		
 		IValue logicalStructure = new CDOObjectLogicalStructureType().getLogicalStructure(value);
 		IVariable[] variables = logicalStructure.getVariables();
+		
 		assertEquals(1, variables.length);
 		assertEquals("foo", variables[0].getName());
 		assertEquals("bar", variables[0].getValue().getValueString());
@@ -169,8 +198,10 @@ class CDOObjectLogicalStructureTypeTest {
 					mockVariables(new String[] { "any" }, mockStringValue("bar1"))
 				}))
 			});
+		
 		IValue logicalStructure = new CDOObjectLogicalStructureType().getLogicalStructure(value);
 		IVariable[] variables = logicalStructure.getVariables();
+		
 		assertEquals(2, variables.length);
 		assertEquals("foo2", variables[0].getName());
 		assertEquals("bar2", variables[0].getValue().getValueString());
@@ -201,8 +232,10 @@ class CDOObjectLogicalStructureTypeTest {
 					mockVariables(new String[] { "any" }, mockStringValue("bar"))
 				}))
 			});
+		
 		IValue logicalStructure = new CDOObjectLogicalStructureType().getLogicalStructure(value);
 		IVariable[] variables = logicalStructure.getVariables();
+		
 		assertEquals(0, variables.length);
 	}
 
