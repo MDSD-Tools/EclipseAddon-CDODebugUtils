@@ -42,11 +42,11 @@ public class CDOObjectLogicalStructureType implements ILogicalStructureTypeDeleg
     }
 
     private static Optional<IVariable> findField(IValue value, String... path) throws DebugException {
-        IValue val = value;
+        IValue currentValue = value;
         for (int i = 0; i < path.length; i++) {
-            for (IVariable variable : val.getVariables()) {
+            for (IVariable variable : currentValue.getVariables()) {
                 if (path[i].equals(variable.getName())) {
-                    val = variable.getValue();
+                    currentValue = variable.getValue();
                     if (i == path.length - 1) {
                         return Optional.of(variable);
                     }
