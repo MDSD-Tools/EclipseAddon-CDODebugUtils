@@ -4,6 +4,8 @@ import static java.util.function.Function.identity;
 import static tools.mdsd.cdo.debug.variablesview.LambdaExceptionUtil.wrapFn;
 import static tools.mdsd.cdo.debug.variablesview.LambdaExceptionUtil.wrapIntFn;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -117,7 +119,14 @@ public class CDOObjectLogicalStructureType implements ILogicalStructureTypeDeleg
             Map<Integer, String> featureIndexToName = buildFeatureIndexToNameMap(allFeaturesData);
             Map<Integer, Integer> transientIndexToFeatureIndex = buildTransientIndexToFeatureIndexMap(
                 transientFeatureIndices);
-            return IntStream
+            List<CDOObjectFeatureVariable> result = new ArrayList<>();
+            findField(realValue, "revision", "classInfo", "eClass", "eAllStructuralFeatures", "data")
+                .map(wrapFn(variable -> new CDOObjectFeatureVariable("structuralFeatures", variable.getValue())))
+                .ifPresent(result::add);
+            findField(realValue, "revision", "classInfo", "eClass", "eAllReferences", "data")
+                .map(wrapFn(variable -> new CDOObjectFeatureVariable("references", variable.getValue())))
+                .ifPresent(result::add);
+            IntStream
                 .range(0, settingVars.length)
                 .filter(i -> transientIndexToFeatureIndex.get(i) != null)
                 .mapToObj(wrapIntFn(i -> {
@@ -126,7 +135,8 @@ public class CDOObjectLogicalStructureType implements ILogicalStructureTypeDeleg
                     IValue featureValue = settingVars[i].getValue();
                     return new CDOObjectFeatureVariable(featureName, featureValue);
                 }))
-                .toArray(IVariable[]::new);
+                .forEachOrdered(result::add);
+            return result.toArray(new IVariable[0]);
         }
 
         private Map<Integer, Integer> buildTransientIndexToFeatureIndexMap(IValue transientFeatureIndicesValue)
