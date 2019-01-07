@@ -157,8 +157,46 @@ class CDOObjectLogicalStructureTypeTest {
 	void testGetLogicalStructureReturnsAMappedField() throws CoreException {
 		IValue value = mockValueWithVariables(
 			new IVariable[] {
+				mockRevisionClassInfo(),
+				mockVariables(new String[] { "eSettings" }, mockValueWithVariables(new IVariable[] {
+					mockVariables(new String[] { "any" }, mockStringValue("bar"))
+				}))
+			});
+
+		IValue logicalStructure = new CDOObjectLogicalStructureType().getLogicalStructure(value);
+		IVariable[] variables = logicalStructure.getVariables();
+
+		assertEquals("foo", variables[0].getName());
+		assertEquals("bar", variables[0].getValue().getValueString());
+	}
+
+	@Test
+	void testGetLogicalStructureReturnsEFlags() throws CoreException {
+		IValue eFlags = mock(IValue.class);
+		IValue value = mockValueWithVariables(
+			new IVariable[] {
+				mockRevisionClassInfo(),
+				mockVariables(new String[] { "eFlags" }, eFlags),
+				mockVariables(new String[] { "eSettings" }, mockValueWithVariables(new IVariable[] {
+					mockVariables(new String[] { "any" }, mockStringValue("bar"))
+				}))
+			});
+
+		IValue logicalStructure = new CDOObjectLogicalStructureType().getLogicalStructure(value);
+		IVariable[] variables = logicalStructure.getVariables();
+
+		assertEquals("eFlags", variables[1].getName());
+		assertEquals(eFlags, variables[1].getValue());
+	}
+
+	@Test
+	void testGetLogicalStructureReturnsEStorage() throws CoreException {
+		IValue eStorage = mock(IValue.class);
+		IValue value = mockValueWithVariables(
+			new IVariable[] {
 				mockVariables(
-					new String[] { "revision", "classInfo" }, mockValueWithVariables(
+					new String[] { "revision", "classInfo" },
+					mockValueWithVariables(
 						new IVariable[] {
 							mockVariables(
 								new String[] { "eClass", "eAllStructuralFeatures", "data" },
@@ -172,6 +210,7 @@ class CDOObjectLogicalStructureTypeTest {
 									mockVariables(new String[] { "any" }, mockStringValue("0")),
 								}))
 						})),
+				mockVariables(new String[] { "eStorage" }, eStorage),
 				mockVariables(new String[] { "eSettings" }, mockValueWithVariables(new IVariable[] {
 					mockVariables(new String[] { "any" }, mockStringValue("bar"))
 				}))
@@ -180,9 +219,45 @@ class CDOObjectLogicalStructureTypeTest {
 		IValue logicalStructure = new CDOObjectLogicalStructureType().getLogicalStructure(value);
 		IVariable[] variables = logicalStructure.getVariables();
 
-		assertEquals(1, variables.length);
-		assertEquals("foo", variables[0].getName());
-		assertEquals("bar", variables[0].getValue().getValueString());
+		assertEquals("eStorage", variables[1].getName());
+		assertEquals(eStorage, variables[1].getValue());
+	}
+
+	@Test
+	void testGetLogicalStructureReturnsEContainer() throws CoreException {
+		IValue eContainer = mock(IValue.class);
+		IValue value = mockValueWithVariables(
+			new IVariable[] {
+				mockVariables(
+					new String[] { "revision", "classInfo" }, mockValueWithVariables(
+						new IVariable[] {
+							mockVariables(
+								new String[] { "eClass" }, mockValueWithVariables(
+									new IVariable[] {
+										mockVariables(new String[] { "eAllStructuralFeatures", "data" },
+											mockValueWithVariables(new IVariable[] {
+												mockVariables(new String[] { "any" },
+													mockValueWithVariables(new IVariable[] {
+														mockVariables(new String[] { "name" }, mockStringValue("foo"))
+													})),
+											})),
+										mockVariables(new String[] { "eContainer" }, eContainer)
+									})),
+							mockVariables(new String[] { "transientFeatureIndices" },
+								mockValueWithVariables(new IVariable[] {
+									mockVariables(new String[] { "any" }, mockStringValue("0")),
+								}))
+						})),
+				mockVariables(new String[] { "eSettings" }, mockValueWithVariables(new IVariable[] {
+					mockVariables(new String[] { "any" }, mockStringValue("bar"))
+				}))
+			});
+
+		IValue logicalStructure = new CDOObjectLogicalStructureType().getLogicalStructure(value);
+		IVariable[] variables = logicalStructure.getVariables();
+
+		assertEquals("eContainer", variables[1].getName());
+		assertEquals(eContainer, variables[1].getValue());
 	}
 
 	@Test
@@ -218,7 +293,6 @@ class CDOObjectLogicalStructureTypeTest {
 		IValue logicalStructure = new CDOObjectLogicalStructureType().getLogicalStructure(value);
 		IVariable[] variables = logicalStructure.getVariables();
 
-		assertEquals(2, variables.length);
 		assertEquals("foo2", variables[0].getName());
 		assertEquals("bar2", variables[0].getValue().getValueString());
 		assertEquals("foo1", variables[1].getName());
@@ -290,6 +364,25 @@ class CDOObjectLogicalStructureTypeTest {
 		IValue transientValue = mock(IValue.class);
 		when(transientValue.getValueString()).thenReturn(value);
 		return transientValue;
+	}
+
+	private IVariable mockRevisionClassInfo() throws DebugException {
+		return mockVariables(
+			new String[] { "revision", "classInfo" },
+			mockValueWithVariables(
+				new IVariable[] {
+					mockVariables(
+						new String[] { "eClass", "eAllStructuralFeatures", "data" },
+						mockValueWithVariables(new IVariable[] {
+							mockVariables(new String[] { "any" }, mockValueWithVariables(new IVariable[] {
+								mockVariables(new String[] { "name" }, mockStringValue("foo"))
+							})),
+						})),
+					mockVariables(new String[] { "transientFeatureIndices" },
+						mockValueWithVariables(new IVariable[] {
+							mockVariables(new String[] { "any" }, mockStringValue("0")),
+						}))
+				}));
 	}
 
 }
