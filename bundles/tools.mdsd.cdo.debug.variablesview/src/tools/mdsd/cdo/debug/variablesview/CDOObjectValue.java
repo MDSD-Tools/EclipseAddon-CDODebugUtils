@@ -81,6 +81,15 @@ public class CDOObjectValue implements IValue {
                 return new CDOObjectFeatureVariable(featureName, featureValue);
             }))
             .forEachOrdered(result::add);
+        findField(realValue, "eFlags")
+            .map(wrapFn(variable -> new CDOObjectFeatureVariable("eFlags", variable.getValue())))
+            .ifPresent(result::add);
+        findField(realValue, "eStorage")
+            .map(wrapFn(variable -> new CDOObjectFeatureVariable("eStorage", variable.getValue())))
+            .ifPresent(result::add);
+        findField(realValue, "revision", "classInfo", "eClass", "eContainer")
+            .map(wrapFn(variable -> new CDOObjectFeatureVariable("eContainer", variable.getValue())))
+            .ifPresent(result::add);
         return result.toArray(new IVariable[0]);
     }
 
