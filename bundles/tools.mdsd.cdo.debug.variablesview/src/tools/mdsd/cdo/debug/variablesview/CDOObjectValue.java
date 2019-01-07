@@ -71,12 +71,6 @@ public class CDOObjectValue implements IValue {
         Map<Integer, Integer> transientIndexToFeatureIndex = buildTransientIndexToFeatureIndexMap(
             transientFeatureIndices);
         List<CDOObjectFeatureVariable> result = new ArrayList<>();
-        findField(realValue, "revision", "classInfo", "eClass", "eAllStructuralFeatures", "data")
-            .map(wrapFn(variable -> new CDOObjectFeatureVariable("structuralFeatures", variable.getValue())))
-            .ifPresent(result::add);
-        findField(realValue, "revision", "classInfo", "eClass", "eAllReferences", "data")
-            .map(wrapFn(variable -> new CDOObjectFeatureVariable("references", variable.getValue())))
-            .ifPresent(result::add);
         IntStream
             .range(0, settingVars.length)
             .filter(i -> transientIndexToFeatureIndex.get(i) != null)
