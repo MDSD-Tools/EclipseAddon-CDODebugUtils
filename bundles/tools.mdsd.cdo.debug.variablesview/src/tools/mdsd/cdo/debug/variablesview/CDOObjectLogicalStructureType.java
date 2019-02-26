@@ -1,9 +1,6 @@
 package tools.mdsd.cdo.debug.variablesview;
 
-import static tools.mdsd.cdo.debug.variablesview.LambdaExceptionUtil.wrapFn;
 import static tools.mdsd.cdo.debug.variablesview.ValueUtil.findField;
-
-import java.util.Objects;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
@@ -17,9 +14,7 @@ public class CDOObjectLogicalStructureType implements ILogicalStructureTypeDeleg
         try {
             return findField(value, "eSettings").isPresent()
                 && findField(value, "revision", "classInfo").isPresent()
-                && findField(value, "viewAndState", "state", "name")
-                    .map(wrapFn(variable -> Objects.equals(variable.getValue().getValueString(), "TRANSIENT")))
-                    .orElse(false);
+                && findField(value, "viewAndState", "state", "name").isPresent();
         } catch (DebugException e) {
             return false;
         }
