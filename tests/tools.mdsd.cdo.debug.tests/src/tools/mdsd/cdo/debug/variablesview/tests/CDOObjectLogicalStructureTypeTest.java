@@ -103,34 +103,6 @@ class CDOObjectLogicalStructureTypeTest {
 	}
 
 	@Test
-	void testDoesNotProvideLogicalStructureWhenViewAndStateStateNameValueMissing() throws DebugException {
-		IValue value = mockValueWithVariables(
-			new IVariable[] {
-				mockVariables(new String[] { "eSettings" }),
-				mockVariables(new String[] { "viewAndState", "state", "name", "foo" }),
-				mockVariables(new String[] { "revision", "classInfo" })
-			});
-
-		boolean providesLogicalStructure = new CDOObjectLogicalStructureType().providesLogicalStructure(value);
-
-		assertFalse(providesLogicalStructure);
-	}
-
-	@Test
-	void testDoesNotProvideLogicalStructureWhenViewAndStateStateNameValueIsNotTransient() throws DebugException {
-		IValue value = mockValueWithVariables(
-			new IVariable[] {
-				mockVariables(new String[] { "eSettings" }),
-				mockVariables(new String[] { "viewAndState", "state", "name" }, mockStringValue("foo")),
-				mockVariables(new String[] { "revision", "classInfo" })
-			});
-
-		boolean providesLogicalStructure = new CDOObjectLogicalStructureType().providesLogicalStructure(value);
-
-		assertFalse(providesLogicalStructure);
-	}
-
-	@Test
 	void testDoesNotProvideLogicalStructureWhenADebugExceptionIsThrown() throws DebugException {
 		IValue value = mock(IValue.class);
 		when(value.getVariables()).thenThrow(DebugException.class);
