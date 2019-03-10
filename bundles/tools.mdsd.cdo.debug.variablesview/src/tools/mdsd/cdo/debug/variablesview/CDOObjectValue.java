@@ -1,13 +1,11 @@
 package tools.mdsd.cdo.debug.variablesview;
 
-import static java.util.function.Function.identity;
 import static tools.mdsd.cdo.debug.variablesview.LambdaExceptionUtil.wrapFn;
 import static tools.mdsd.cdo.debug.variablesview.LambdaExceptionUtil.wrapIntFn;
 import static tools.mdsd.cdo.debug.variablesview.ValueUtil.findField;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -64,23 +62,8 @@ public class CDOObjectValue implements IValue {
     public IVariable[] getVariables() throws DebugException {
         IValue allFeaturesData = findField(realValue,
             "revision", "classInfo", "eClass", "eAllStructuralFeatures", "data").get().getValue();
-        IValue transientFeatureIndices = findField(realValue,
-            "revision", "classInfo", "transientFeatureIndices").get().getValue();
-        IVariable[] settingVars = findField(realValue, "eSettings").get().getValue().getVariables();
-        Map<Integer, String> featureIndexToName = buildFeatureIndexToNameMap(allFeaturesData);
-        Map<Integer, Integer> transientIndexToFeatureIndex = buildTransientIndexToFeatureIndexMap(
-            transientFeatureIndices);
         List<CDOObjectFeatureVariable> result = new ArrayList<>();
-        IntStream
-            .range(0, settingVars.length)
-            .filter(i -> transientIndexToFeatureIndex.get(i) != null)
-            .mapToObj(wrapIntFn(i -> {
-                Integer featureIndex = transientIndexToFeatureIndex.get(i);
-                String featureName = featureIndexToName.get(featureIndex);
-                IValue featureValue = settingVars[i].getValue();
-                return new CDOObjectFeatureVariable(featureName, featureValue);
-            }))
-            .forEachOrdered(result::add);
+        result.addAll(createObjectFeatureVariables(allFeaturesData));
         findField(realValue, "eFlags")
             .map(wrapFn(variable -> new CDOObjectFeatureVariable("eFlags", variable.getValue())))
             .ifPresent(result::add);
@@ -93,25 +76,65 @@ public class CDOObjectValue implements IValue {
         return result.toArray(new IVariable[0]);
     }
 
-    private Map<Integer, Integer> buildTransientIndexToFeatureIndexMap(IValue transientFeatureIndicesValue)
+    private List<CDOObjectFeatureVariable> createObjectFeatureVariables(IValue allFeaturesDataValue)
         throws DebugException {
-        IVariable[] variables = transientFeatureIndicesValue.getVariables();
-        return IntStream.range(0, variables.length).boxed()
-            .collect(
-                Collectors.toMap(
-                    wrapFn(i -> Integer.parseInt(variables[i].getValue().getValueString())),
-                    identity()));
+        IVariable[] allFeatures = allFeaturesDataValue.getVariables();
+        return IntStream
+            .range(0, allFeatures.length)
+            .mapToObj(wrapIntFn(i -> {
+                IVariable variable = allFeatures[i];
+                String name = findField(variable.getValue(), "name").get()
+                    .getValue()
+                    .getValueString();
+                IValue value = getFeatureValue(i);
+                return new CDOObjectFeatureVariable(name, value);
+            }))
+            .collect(Collectors.toList());
     }
 
-    private Map<Integer, String> buildFeatureIndexToNameMap(IValue allFeaturesDataValue) throws DebugException {
-        IVariable[] allFeaturesDataVariables = allFeaturesDataValue.getVariables();
-        return IntStream.range(0, allFeaturesDataVariables.length).boxed()
-            .collect(Collectors.toMap(
-                identity(),
-                wrapFn(i -> findField(allFeaturesDataVariables[i].getValue(), "name")
-                    .get()
-                    .getValue()
-                    .getValueString())));
+    private IValue getFeatureValue(int i) throws DebugException {
+        if (findField(realValue, "viewAndState", "state", "name").get().getValue().getValueString()
+            .equals("TRANSIENT")) {
+            return getTransientFeatureValue(i);
+        } else {
+            if (isPersistentFeature(i)) {
+                return getPersistentFeatureValue(i);
+            }
+            return getTransientFeatureValue(i);
+        }
+    }
+
+    private IValue getTransientFeatureValue(int i) throws DebugException {
+        IVariable[] transientIndices = findField(realValue, "revision", "classInfo",
+            "transientFeatureIndices")
+                .get().getValue().getVariables();
+        IVariable[] settings = findField(realValue, "eSettings").get().getValue().getVariables();
+        int settingsIndex = Integer.parseInt(transientIndices[i].getValue().getValueString());
+        if (settingsIndex < settings.length) {
+            return settings[settingsIndex].getValue();
+        } else {
+            return new CDOObjectStringValue("null");
+        }
+    }
+
+    private IValue getPersistentFeatureValue(int i) throws DebugException {
+        IVariable[] persistentIndices = findField(realValue, "revision", "classInfo",
+            "persistentFeatureIndices")
+                .get().getValue().getVariables();
+        IVariable[] revisionValues = findField(realValue, "revision", "values").get().getValue().getVariables();
+        int persistentIndex = Integer.parseInt(persistentIndices[i].getValue().getValueString());
+        if (persistentIndex < revisionValues.length) {
+            return revisionValues[persistentIndex].getValue();
+        } else {
+            return new CDOObjectStringValue("null");
+        }
+    }
+
+    private boolean isPersistentFeature(int i) throws DebugException {
+        IVariable[] persistentIndices = findField(realValue, "revision", "classInfo",
+            "persistentFeatureIndices")
+                .get().getValue().getVariables();
+        return Integer.parseInt(persistentIndices[i].getValue().getValueString()) > -1;
     }
 
     @Override
