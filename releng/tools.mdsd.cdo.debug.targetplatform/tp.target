@@ -1,43 +1,44 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?><target name="Eclipse Modeling Photon 0" sequenceNumber="15">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?><target name="Eclipse Modeling Oxygen 2" sequenceNumber="15">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.e4.core.tools.feature.feature.group" version="4.8.0.v20180512-1132"/>
-<unit id="org.eclipse.egit.feature.group" version="5.0.0.201806131550-r"/>
-<unit id="org.eclipse.emf.cdo.epp.feature.group" version="4.7.0.v20180530-1201"/>
-<unit id="org.eclipse.emf.compare.egit.feature.group" version="1.2.3.201805161152"/>
+<unit id="org.eclipse.amalgam.discovery.feature.group" version="1.8.0.201706011309"/>
+<unit id="org.eclipse.e4.core.tools.feature.feature.group" version="4.7.0.v20170515-1617"/>
+<unit id="org.eclipse.egit.feature.group" version="4.9.2.201712150930-r"/>
+<unit id="org.eclipse.emf.cdo.epp.feature.group" version="4.6.0.v20170602-1611"/>
+<unit id="org.eclipse.emf.compare.egit.feature.group" version="1.2.2.201709090201"/>
 <unit id="org.eclipse.emf.ecoretools.design.feature.group" version="3.3.0.201706121316"/>
 <unit id="org.eclipse.emf.ecoretools.explorer.contextual.feature.group" version="3.3.0.201706121316"/>
-<unit id="org.eclipse.emf.ecp.sdk.feature.feature.group" version="1.17.0.20180611-0706"/>
+<unit id="org.eclipse.emf.ecp.sdk.feature.feature.group" version="1.15.0.20171204-2237"/>
 <unit id="org.eclipse.emf.emfstore.sdk.feature.feature.group" version="1.9.0.v20170530-0703"/>
-<unit id="org.eclipse.emf.parsley.sdk.feature.group" version="1.3.0.v20180427-1239"/>
-<unit id="org.eclipse.emf.query.sdk.feature.group" version="1.12.0.201805030653"/>
-<unit id="org.eclipse.emf.sdk.feature.group" version="2.14.0.v20180529-1157"/>
-<unit id="org.eclipse.emf.transaction.sdk.feature.group" version="1.12.0.201805140824"/>
-<unit id="org.eclipse.emf.validation.sdk.feature.group" version="1.12.0.201805030717"/>
+<unit id="org.eclipse.emf.parsley.sdk.feature.group" version="1.2.1.v20170625-1309"/>
+<unit id="org.eclipse.emf.query.sdk.feature.group" version="1.11.0.201706061326"/>
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.13.0.v20170609-0928"/>
+<unit id="org.eclipse.emf.transaction.sdk.feature.group" version="1.11.0.201706061339"/>
+<unit id="org.eclipse.emf.validation.sdk.feature.group" version="1.11.0.201706061352"/>
 <unit id="org.eclipse.gef.sdk.feature.group" version="3.11.0.201606061308"/>
-<unit id="org.eclipse.gmf.runtime.sdk.feature.group" version="1.12.0.201806010809"/>
-<unit id="org.eclipse.jdt.feature.group" version="3.14.0.v20180611-0500"/>
-<unit id="org.eclipse.mylyn.bugzilla_feature.feature.group" version="3.24.0.v20180221-1812"/>
-<unit id="org.eclipse.mylyn.context_feature.feature.group" version="3.24.0.v20170629-2230"/>
-<unit id="org.eclipse.mylyn.ide_feature.feature.group" version="3.24.0.v20170629-2230"/>
-<unit id="org.eclipse.mylyn.java_feature.feature.group" version="3.24.0.v20170629-2230"/>
-<unit id="org.eclipse.mylyn.pde_feature.feature.group" version="3.24.0.v20170629-2230"/>
+<unit id="org.eclipse.gmf.runtime.sdk.feature.group" version="1.11.0.201706061437"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.13.2.v20171130-0906"/>
+<unit id="org.eclipse.mylyn.bugzilla_feature.feature.group" version="3.23.1.v20170623-0008"/>
+<unit id="org.eclipse.mylyn.context_feature.feature.group" version="3.23.0.v20170414-0629"/>
+<unit id="org.eclipse.mylyn.ide_feature.feature.group" version="3.23.0.v20170411-2108"/>
+<unit id="org.eclipse.mylyn.java_feature.feature.group" version="3.23.0.v20170411-2108"/>
+<unit id="org.eclipse.mylyn.pde_feature.feature.group" version="3.23.0.v20170411-2108"/>
 <unit id="org.eclipse.mylyn.wikitext_feature.feature.group" version="3.0.19.201711172000"/>
-<unit id="org.eclipse.mylyn_feature.feature.group" version="3.24.0.v20180227-0955"/>
-<unit id="org.eclipse.ocl.all.sdk.feature.group" version="5.4.0.v20180611-1119"/>
-<unit id="org.eclipse.pde.feature.group" version="3.13.100.v20180611-0826"/>
-<unit id="org.eclipse.platform.feature.group" version="4.8.0.v20180611-0656"/>
-<unit id="org.eclipse.sdk.feature.group" version="4.8.0.v20180611-0826"/>
-<unit id="org.eclipse.tips.feature.feature.group" version="0.1.0.v20180608-1525"/>
-<unit id="org.eclipse.uml2.sdk.feature.group" version="5.4.0.v20180604-1153"/>
-<unit id="org.eclipse.xsd.sdk.feature.group" version="2.14.0.v20180131-0817"/>
-<repository location="http://download.eclipse.org/releases/photon/201806271001"/>
+<unit id="org.eclipse.mylyn_feature.feature.group" version="3.23.1.v20170623-0008"/>
+<unit id="org.eclipse.ocl.all.sdk.feature.group" version="5.3.0.v20170607-1133"/>
+<unit id="org.eclipse.pde.feature.group" version="3.13.2.v20171130-0510"/>
+<unit id="org.eclipse.platform.feature.group" version="4.7.2.v20171130-0510"/>
+<unit id="org.eclipse.sdk.feature.group" version="4.7.2.v20171130-0906"/>
+<unit id="org.eclipse.uml2.sdk.feature.group" version="5.3.0.v20170605-1616"/>
+<unit id="org.eclipse.xsd.sdk.feature.group" version="2.13.0.v20170609-0928"/>
+<repository location="http://download.eclipse.org/releases/oxygen/201712201001"/>
 </location>
-	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository"/>
-		<unit id="org.mockito" version="2.13.0.v20180426-1843"/>
-		<unit id="org.hamcrest.library" version="1.3.0.v20180524-2246"/>
-		<unit id="org.objenesis" version="2.6.0.v20180420-1519"/>
-	</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+	<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository"/>
+	<unit id="org.mockito" version="2.13.0.v20180426-1843"/>
+	<unit id="org.hamcrest.library" version="1.3.0.v20180524-2246"/>
+	<unit id="org.objenesis" version="2.6.0.v20180420-1519"/>
+	<unit id="org.junit" version="4.12.0.v201504281640"/>
+</location>
 </locations>
 </target>
