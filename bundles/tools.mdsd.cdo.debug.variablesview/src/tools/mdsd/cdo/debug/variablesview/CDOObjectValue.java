@@ -6,6 +6,7 @@ import static tools.mdsd.cdo.debug.variablesview.ValueUtil.findField;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -121,13 +122,22 @@ public class CDOObjectValue implements IValue {
         IVariable[] persistentIndices = findField(realValue, "revision", "classInfo",
             "persistentFeatureIndices")
                 .get().getValue().getVariables();
-        IVariable[] revisionValues = findField(realValue, "revision", "values").get().getValue().getVariables();
+        IVariable[] revisionValues = getRevisionValues();
         int persistentIndex = Integer.parseInt(persistentIndices[i].getValue().getValueString());
         if (persistentIndex < revisionValues.length) {
             return revisionValues[persistentIndex].getValue();
         } else {
-            return new CDOObjectStringValue("null");
+            return new CDOObjectStringValue("UNAVAILABLE");
         }
+    }
+
+    private IVariable[] getRevisionValues() throws DebugException {
+        try {
+            return findField(realValue, "revision", "values").get().getValue().getVariables();
+        } catch (NoSuchElementException e) {
+            return new IVariable[0];
+        }
+
     }
 
     private boolean isPersistentFeature(int i) throws DebugException {
