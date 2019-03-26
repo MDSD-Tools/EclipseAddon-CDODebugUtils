@@ -54,7 +54,7 @@ public class CDOWebPagePackageImpl extends EPackageImpl implements CDOWebPagePac
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link CDOWebPagePackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -69,9 +69,10 @@ public class CDOWebPagePackageImpl extends EPackageImpl implements CDOWebPagePac
 			return (CDOWebPagePackage) EPackage.Registry.INSTANCE.getEPackage(CDOWebPagePackage.eNS_URI);
 
 		// Obtain or create and register package
-		CDOWebPagePackageImpl theCDOWebPagePackage = (CDOWebPagePackageImpl) (EPackage.Registry.INSTANCE
-				.get(eNS_URI) instanceof CDOWebPagePackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI)
-						: new CDOWebPagePackageImpl());
+		Object registeredCDOWebPagePackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		CDOWebPagePackageImpl theCDOWebPagePackage = registeredCDOWebPagePackage instanceof CDOWebPagePackageImpl
+				? (CDOWebPagePackageImpl) registeredCDOWebPagePackage
+				: new CDOWebPagePackageImpl();
 
 		isInited = true;
 
@@ -94,6 +95,7 @@ public class CDOWebPagePackageImpl extends EPackageImpl implements CDOWebPagePac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getCDOWebPage() {
 		return cdoWebPageEClass;
 	}
@@ -103,6 +105,7 @@ public class CDOWebPagePackageImpl extends EPackageImpl implements CDOWebPagePac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getCDOWebPage_Title() {
 		return (EAttribute) cdoWebPageEClass.getEStructuralFeatures().get(0);
 	}
@@ -112,6 +115,27 @@ public class CDOWebPagePackageImpl extends EPackageImpl implements CDOWebPagePac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public EAttribute getCDOWebPage_MultivaluedAttribute() {
+		return (EAttribute) cdoWebPageEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCDOWebPage_TransientAttribute() {
+		return (EAttribute) cdoWebPageEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public CDOWebPageFactory getCDOWebPageFactory() {
 		return (CDOWebPageFactory) getEFactoryInstance();
 	}
@@ -138,6 +162,8 @@ public class CDOWebPagePackageImpl extends EPackageImpl implements CDOWebPagePac
 		// Create classes and their features
 		cdoWebPageEClass = createEClass(CDO_WEB_PAGE);
 		createEAttribute(cdoWebPageEClass, CDO_WEB_PAGE__TITLE);
+		createEAttribute(cdoWebPageEClass, CDO_WEB_PAGE__MULTIVALUED_ATTRIBUTE);
+		createEAttribute(cdoWebPageEClass, CDO_WEB_PAGE__TRANSIENT_ATTRIBUTE);
 	}
 
 	/**
@@ -175,6 +201,12 @@ public class CDOWebPagePackageImpl extends EPackageImpl implements CDOWebPagePac
 				IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getCDOWebPage_Title(), ecorePackage.getEString(), "title", null, 0, 1, CDOWebPage.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCDOWebPage_MultivaluedAttribute(), ecorePackage.getEString(), "multivaluedAttribute", null, 0,
+				-1, CDOWebPage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCDOWebPage_TransientAttribute(), ecorePackage.getEString(), "transientAttribute", null, 0, 1,
+				CDOWebPage.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/CDOWebPage/src-gen" creationIcons="false" editDirectory="/CDOWebPage.edit/src-gen" editorDirectory="/CDOWebPage.editor/src-gen" modelPluginID="CDOWebPage" modelName="CDOWebPage" rootExtendsInterface="org.eclipse.emf.cdo.CDOObject" rootExtendsClass="org.eclipse.emf.internal.cdo.CDOObjectImpl" codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" featureDelegation="Dynamic" complianceLevel="8.0" copyrightFields="false" providerRootExtendsClass="org.eclipse.emf.cdo.edit.CDOItemProviderAdapter" operationReflection="true" importOrganizing="true">
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/CDOWebPage/src-gen" creationIcons="false" editDirectory="/CDOWebPage.edit/src-gen"
+    editorDirectory="/CDOWebPage.editor/src-gen" modelPluginID="CDOWebPage" modelName="CDOWebPage"
+    rootExtendsInterface="org.eclipse.emf.cdo.CDOObject" rootExtendsClass="org.eclipse.emf.internal.cdo.CDOObjectImpl"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" featureDelegation="Dynamic"
+    complianceLevel="8.0" copyrightFields="false" providerRootExtendsClass="org.eclipse.emf.cdo.edit.CDOItemProviderAdapter"
+    operationReflection="true" importOrganizing="true">
   <foreignModel>cDOWebPage.ecore</foreignModel>
   <modelPluginVariables>CDO=org.eclipse.emf.cdo</modelPluginVariables>
   <testsDirectory xsi:nil="true"/>
-  <genPackages prefix="CDOWebPage" disposableProviderFactory="true">
-    <ecorePackage href="cDOWebPage.ecore#/"/>
-    <genClasses>
-      <ecoreClass href="cDOWebPage.ecore#//CDOWebPage"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="cDOWebPage.ecore#//CDOWebPage/title"/>
-      </genFeatures>
+  <genPackages prefix="CDOWebPage" disposableProviderFactory="true" ecorePackage="cDOWebPage.ecore#/">
+    <genClasses ecoreClass="cDOWebPage.ecore#//CDOWebPage">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute cDOWebPage.ecore#//CDOWebPage/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute cDOWebPage.ecore#//CDOWebPage/multivaluedAttribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute cDOWebPage.ecore#//CDOWebPage/transientAttribute"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
