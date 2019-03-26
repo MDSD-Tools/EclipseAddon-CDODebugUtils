@@ -12,10 +12,12 @@ import cDOWebPage.CDOWebPage;
 import cDOWebPage.impl.CDOWebPageFactoryImpl;
 
 public class DemoDirtyState {
-	
+
 	public static void main(String[] args) throws ConcurrentAccessException, CommitException {
 		CDOWebPage cdoWebPage = CDOWebPageFactoryImpl.eINSTANCE.createCDOWebPage();
 		cdoWebPage.setTitle("foo");
+		cdoWebPage.setTransientAttribute("bar");
+		cdoWebPage.getMultivaluedAttribute().add("bak");
 	    CDOSession session = ConnectionUtil.createConfiguration(ConnectionUtil.createConnector()).openNet4jSession();
 	    String id = UUID.randomUUID().toString();
 	    CDOTransaction transaction = session.openTransaction();
