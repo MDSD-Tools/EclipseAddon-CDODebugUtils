@@ -19,13 +19,22 @@ Displays settings of CDOObjects as fields. Usable via logical structure view.
 
 ## Running the examples
 
-Note: all examples except for DemoTransientState require a running CDO server with a configured repository named "repo1".
+1. Download and install Eclipse IDE 2019-03 (for Enterprise Java developers).
 
-1. Analogous to "Building the plugin - Manually" import following nested projects:
+2. Analogous to "Building the plugin - Manually", import following nested projects:
 
+    * `de.cooperateproject.repository.product`
     * `cdotest`
     * `CDOWebPage`
 
-2. Navigate to `cdotest/de.cooperateproject.repository.targetplatforms/neon.target` and click on the link "Set as Active Target Platform" in the upper right corner.
+3. Navigate to `cdotest/de.cooperateproject.repository.targetplatforms/neon.target` and click on the link "Set as Active Target Platform" in the upper right corner.
 
-3. Right click on one of the classes in the `cdotest` package and select _Debug as_ -> _Java Application_.
+4. Open `de.cooperateproject.repository.product/CooperateCDOServer.product` and click on the Launch button.
+
+A warning will be printed to the console, similar to "!MESSAGE CDO server configuration not found: /Applications/Eclipse.app/Contents/MacOS/configuration/cdo-server.xml".
+
+Copy `REPOSITORY_PATH/test_projects/cdoserver/org.eclipse.emf.cdo.server.product/config/cdo-server.xml` to the path printed in the warning.
+
+5. Click on the Stop button in the Console tab in Eclipse and launch the server again by clicking the Launch button in the product.
+
+6. Debug one of the `Demo...` classes in the `cdotest` project as described in the comments on the bottom of the files.
