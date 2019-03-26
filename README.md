@@ -31,7 +31,7 @@ Displays settings of CDOObjects as fields. Usable via logical structure view.
 
 4. Open `de.cooperateproject.repository.product/CooperateCDOServer.product` and click on the Launch button.
 
-A warning will be printed to the console, similar to `"!MESSAGE CDO server configuration not found: /Applications/Eclipse.app/Contents/MacOS/configuration/cdo-server.xml"`.
+A warning will be printed to the console, similar to `!MESSAGE CDO server configuration not found: /Applications/Eclipse.app/Contents/MacOS/configuration/cdo-server.xml`.
 
 Copy `REPOSITORY_PATH/test_projects/cdoserver/org.eclipse.emf.cdo.server.product/config/cdo-server.xml` to the path printed in the warning.
 
