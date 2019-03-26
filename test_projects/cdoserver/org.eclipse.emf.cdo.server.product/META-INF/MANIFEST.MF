@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.emf.cdo.server.product;singleton:=true
+Bundle-Version: 4.1.600.v20180529-1130
+Bundle-ClassPath: org.eclipse.emf.cdo.server.product_4.1.600.v20180529-1130.jar
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.5.0,4.0.0)",
+ org.eclipse.emf.cdo.server.db;bundle-version="[4.0.0,5.0.0)",
+ org.eclipse.emf.cdo.server.net4j;bundle-version="[4.0.0,5.0.0)",
+ org.eclipse.net4j.db.h2;bundle-version="[4.0.0,5.0.0)",
+ org.eclipse.net4j.tcp;bundle-version="[4.0.0,5.0.0)"
+Build-Jdk: 1.8.0_162
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Eclipse-SourceReferences: scm:git:https://git.eclipse.org/r/p/cdo/cdo.git;path="plugins/org.eclipse.emf.cdo.server.product";commitId=62c69ee2485b8a8972cdadd8f3f71765aa10c5fa
+Created-By: Apache Maven 3.5.2
+Built-By: genie.cdo
+Automatic-Module-Name: org.eclipse.emf.cdo.server.product
+Archiver-Version: Plexus Archiver
