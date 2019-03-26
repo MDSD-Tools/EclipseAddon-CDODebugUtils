@@ -68,6 +68,7 @@ public class CDOWebPageFactoryImpl extends EFactoryImpl implements CDOWebPageFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CDOWebPage createCDOWebPage() {
 		CDOWebPageImpl cdoWebPage = new CDOWebPageImpl();
 		return cdoWebPage;
@@ -78,6 +79,7 @@ public class CDOWebPageFactoryImpl extends EFactoryImpl implements CDOWebPageFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CDOWebPagePackage getCDOWebPagePackage() {
 		return (CDOWebPagePackage) getEPackage();
 	}
