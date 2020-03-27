@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: CDO Variables View
 Bundle-SymbolicName: tools.mdsd.cdo.debug.variablesview;singleton:=true
 Bundle-Version: 0.1.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.debug.core;bundle-version="3.10.0",
- org.eclipse.equinox.registry
+ org.eclipse.core.runtime;bundle-version="3.16.0"
 Export-Package: tools.mdsd.cdo.debug.variablesview
+Automatic-Module-Name: tools.mdsd.cdo.debug.variablesview
