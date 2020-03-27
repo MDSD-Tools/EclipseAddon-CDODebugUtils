@@ -1,3 +1,3 @@
-mdsdToolsEclipsePipeline {
+MDSDToolsPipeline {
     deployUpdatesite 'releng/tools.mdsd.cdo.debug.updatesite/target/repository'
 }
