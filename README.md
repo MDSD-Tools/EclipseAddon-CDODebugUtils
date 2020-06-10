@@ -2,6 +2,9 @@
 
 Displays settings of CDOObjects as fields. Usable via logical structure view.
 
+## Installing the plugin
+Add the [update site](https://updatesite.mdsd.tools/eclipseaddon-cdodebugutils/nightly/) to your Eclipse installation and install the feature.
+
 ## Building the plugin
 
 ### Maven
